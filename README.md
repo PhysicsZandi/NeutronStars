@@ -1,0 +1,1 @@
+In this repository, you will find a project in python which studies neutron stars.
