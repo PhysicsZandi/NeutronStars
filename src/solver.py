@@ -15,7 +15,7 @@ def interpolation_eos(file_path, low_density_eos=False, plot=False):
 
     # For high density equations of state, the low density part is added
     if low_density_eos == True:
-        with open(f"/Users/matte/projects/TOV/src/data/low_density.csv", "r") as file:
+        with open(f"data/low_density.csv", "r") as file:
             next(file)  # Skip header
             for line in file:
                 n, p, e = line.strip().split(",")
@@ -216,9 +216,15 @@ class Solver_range:
     # Compute the mass and the radius of the object for all initial pressures
     def solve(self):
         for p0 in self.range_initial_pressures:
-            self.solver_single_p = Solver(
-                self.eos, self.resolution, p0, self.relativity_corrections
-            )
+            # In order to take into account bigger neutron stars for smaller central pressures
+            if p0 < 1e30:
+                self.solver_single_p = Solver(
+                    self.eos, 1e4, p0, self.relativity_corrections
+                )
+            else:
+                self.solver_single_p = Solver(
+                    self.eos, self.resolution, p0, self.relativity_corrections
+                )
             self.solver_single_p.solve()
             r, m = self.solver_single_p.get()
             self.masses.append(m)
