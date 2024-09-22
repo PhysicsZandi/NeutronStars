@@ -287,19 +287,17 @@ def sky(range_initial_pressures):
 
     return energy_density_sky
 
-    """
 
-plt.plot(range_initial_pressures, energy_densities_nonrel, label="fermi_nonrel")
-plt.plot(range_initial_pressures, energy_densities_gen, label="fermi_gen")
-plt.plot(pressures_npe, energy_densities_npe, label="fermi_npe")
-plt.ylabel("Energy density ($erg / cm^3$)")
-plt.yscale("log")
-plt.xlabel("Pressure ($dyne / cm^2$)")
-plt.xscale("log")
-plt.legend()
+# plt.plot(range_initial_pressures, energy_densities_nonrel, label="fermi_nonrel")
+# plt.plot(range_initial_pressures, energy_densities_gen, label="fermi_gen")
+# plt.plot(pressures_npe, energy_densities_npe, label="fermi_npe")
+# plt.ylabel("Energy density ($erg / cm^3$)")
+# plt.yscale("log")
+# plt.xlabel("Pressure ($dyne / cm^2$)")
+# plt.xscale("log")
+# plt.legend()
 # plt.savefig("code/plot/ideal_eos_n.pdf")
-plt.show()
-"""
+# plt.show()
 
 
 # Plot
