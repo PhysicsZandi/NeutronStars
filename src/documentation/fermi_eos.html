@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.1">
+<title>fermi_eos API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>fermi_eos</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="fermi_eos.beta_equilibrium_condition"><code class="name flex">
+<span>def <span class="ident">beta_equilibrium_condition</span></span>(<span>k_p, k_n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Condition of beta equilibrium in order to compute k_p as a function of k_n.
+If it returns zero, then the Fermi momentum of the proton is the expected one, since it means that chemical potentials of neutrons, protons and electrons match the equilibrum condition for the (beta) weak interactions.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of protons in g cm / s.</dd>
+<dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of neutrons in g cm / s.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Chemical potential in erg.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_emp"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_emp</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from pressure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If energy density is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_from_u_emp"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_from_u_emp</span></span>(<span>u)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from u = n / n_0.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_from_u_sky"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_from_u_sky</span></span>(<span>u)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from u = n / n_0.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_from_x_gen"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_from_x_gen</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from x = k / (m c).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless x = k / (m c).</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If energy density is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_from_x_npe"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_from_x_npe</span></span>(<span>x, e_0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from x = k / (mc) and prefactor e_0.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless x.</dd>
+<dt><strong><code>e_0</code></strong> :&ensp;<code>float</code></dt>
+<dd>Prefactor in erg/cm^3.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_gen"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_gen</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from pressure.</p>
+<p>Parameters:
+- p : float
+Pressure in dyne/cm^2.</p>
+<p>Returns:
+- float
+Energy density in erg/cm^3.</p></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_npe"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_npe</span></span>(<span>k_n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>In presence of protons, electrons and neutrons, compute energy density from Fermi momentum of neutrons.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of neutrons in g cm / s.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If energy density is negative.</dd>
+<dt><code>Returns:</code></dt>
+<dd>&nbsp;</dd>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_pe"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_pe</span></span>(<span>k_p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>In presence of protons and electrons (no neutrons), compute energy density from Fermi momentum of protons.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of protons in g cm / s.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If energy density is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_energy_density_sky"><code class="name flex">
+<span>def <span class="ident">compute_energy_density_sky</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from pressure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="raises">Raises:</h2>
+<p>ValueError
+If energy density is negative.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Number density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_fermi_momentum_nonrel"><code class="name flex">
+<span>def <span class="ident">compute_fermi_momentum_nonrel</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute Fermi momentum from pressure in the non-relativistic limit.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Fermi momentum in g cm/s.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_k_n"><code class="name flex">
+<span>def <span class="ident">compute_k_n</span></span>(<span>n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute Fermi momentum of neutrons from number density.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Number density in 1/cm^3</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Fermi momentum of neutrons in g cm / s.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_k_p"><code class="name flex">
+<span>def <span class="ident">compute_k_p</span></span>(<span>k_n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute k_p from k_n. he fsolve algorithm is used to find the right value of k_p that matches the beta equilibrium condition for chemical potential.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of neutrons in g cm / s.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If Fermi momentum of protons is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Fermi momentum of protons in g cm / s.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_number_density_emp"><code class="name flex">
+<span>def <span class="ident">compute_number_density_emp</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute number density from pressure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If number density is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Number density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_number_density_gen"><code class="name flex">
+<span>def <span class="ident">compute_number_density_gen</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute number density from pressure.</p>
+<p>Parameters:
+- p : float
+Pressure in dyne/cm^2.</p>
+<p>Returns:
+- float
+Number density in erg/cm^3.</p></div>
+</dd>
+<dt id="fermi_eos.compute_number_density_nonrel"><code class="name flex">
+<span>def <span class="ident">compute_number_density_nonrel</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute number density from pressure in the non-relativistic limit.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Number density in 1/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_number_density_sky"><code class="name flex">
+<span>def <span class="ident">compute_number_density_sky</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute number density from pressure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If number density is negative.</dd>
+</dl>
+<h2 id="returns">Returns:</h2>
+<p>float
+Energy density in erg/cm^3.</p></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_from_u_emp"><code class="name flex">
+<span>def <span class="ident">compute_pressure_from_u_emp</span></span>(<span>u, p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute calculated pressure minus expected pressure from the latter and u = n / n_0. If it returns zero, then the pressure is exactly the desidered one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Calculated pressure minus expected.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_from_u_sky"><code class="name flex">
+<span>def <span class="ident">compute_pressure_from_u_sky</span></span>(<span>u, p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute calculated pressure minus expected pressure from expected pressure and u = n / n_0.
+If it returns zero, then the pressure is exactly the desidered one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Calculated pressure minus expected.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_from_x_npe"><code class="name flex">
+<span>def <span class="ident">compute_pressure_from_x_npe</span></span>(<span>x, e_0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute pressure from x = k / (mc) and prefactor e_0.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless x.</dd>
+<dt><strong><code>e_0</code></strong> :&ensp;<code>float</code></dt>
+<dd>Prefactor in erg/cm^3.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_gen"><code class="name flex">
+<span>def <span class="ident">compute_pressure_gen</span></span>(<span>x, p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute calculated pressure minus expected pressure given the latter and x = k / (m c). If it returns zero, then the pressure is exactly the desidered one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless x = k / (m c).</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Calculated pressure minus expected.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_npe"><code class="name flex">
+<span>def <span class="ident">compute_pressure_npe</span></span>(<span>k_n)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>In presence of protons, electrons and neutrons, compute pressure from Fermi momentum of neutrons.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of neutrons in g cm / s.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If pressure is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_pressure_pe"><code class="name flex">
+<span>def <span class="ident">compute_pressure_pe</span></span>(<span>k_p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>In presence of protons and electrons (no neutrons), compute pressure from Fermi momentum of protons.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>k_p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Fermi momentum of protons in g cm / s.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If pressure is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_u_emp"><code class="name flex">
+<span>def <span class="ident">compute_u_emp</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If u is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_u_sky"><code class="name flex">
+<span>def <span class="ident">compute_u_sky</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless u = n / n_0.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If u is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.compute_x_gen"><code class="name flex">
+<span>def <span class="ident">compute_x_gen</span></span>(<span>p)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute x = k / (m c) from pressure. The toms748 algorithm is used to find the right value of x that matches the expected pressure with the calculated one.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^3.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If x is negative.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Dimensionless x = k / (m c).</dd>
+</dl></div>
+</dd>
+<dt id="fermi_eos.equation_of_state_emp"><code class="name flex">
+<span>def <span class="ident">equation_of_state_emp</span></span>(<span>pressures)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and save to file the equation of state for empirical interactions. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pressures</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>Numpy array of pressures in dyne/cm^2.</dd>
+</dl>
+<p>Raises:
+- ValueError
+If pressure is negative.</p></div>
+</dd>
+<dt id="fermi_eos.equation_of_state_gen"><code class="name flex">
+<span>def <span class="ident">equation_of_state_gen</span></span>(<span>pressures)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and save to file the equation of state for a generic degenerate ideal Fermi gas of neutrons. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pressures</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>Numpy array of pressures in dyne/cm^2.</dd>
+</dl>
+<p>Raises:
+- ValueError
+If pressure is negative.</p></div>
+</dd>
+<dt id="fermi_eos.equation_of_state_nonrel"><code class="name flex">
+<span>def <span class="ident">equation_of_state_nonrel</span></span>(<span>pressures)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and save to file the equation of state for a non-relativistic degenerate ideal Fermi gas of neutrons. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pressures</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>Numpy array of pressures in dyne/cm^2.</dd>
+</dl>
+<p>Raises:
+- ValueError
+If pressure is negative.</p></div>
+</dd>
+<dt id="fermi_eos.equation_of_state_npe"><code class="name flex">
+<span>def <span class="ident">equation_of_state_npe</span></span>(<span>number_densities)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and save to file the equation of state for a generic degenerate ideal Fermi gas of neutrons, protons and electrons in beta equilibrium. The equation of state is in the form energy density as function of pressure.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>number_densities</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>Numpy array of number densities in 1/cm^3.</dd>
+</dl>
+<p>Raises:
+- ValueError
+If number density is negative.</p></div>
+</dd>
+<dt id="fermi_eos.equation_of_state_sky"><code class="name flex">
+<span>def <span class="ident">equation_of_state_sky</span></span>(<span>pressures)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and save to file the equation of state for Skyrme Hartee-Fock interactions. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>pressures</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>Numpy array of pressures in dyne/cm^2.</dd>
+</dl>
+<p>Raises:
+- ValueError
+If pressure is negative.</p></div>
+</dd>
+<dt id="fermi_eos.polytropic_equation_of_state"><code class="name flex">
+<span>def <span class="ident">polytropic_equation_of_state</span></span>(<span>p, k, gamma)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute energy density from pressure using polytropic equation of state. K is the prefactor and gamma is the exponent of energy density.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
+<dd>Pressure in dyne/cm^2.</dd>
+<dt><strong><code>k</code></strong> :&ensp;<code>float</code></dt>
+<dd>K in (dyne/cm^2)^(1 - gamma).</dd>
+<dt><strong><code>gamma</code></strong> :&ensp;<code>float</code></dt>
+<dd>Dimensionless Gamma.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Energy density in erg/cm^3.</dd>
+</dl></div>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="fermi_eos.beta_equilibrium_condition" href="#fermi_eos.beta_equilibrium_condition">beta_equilibrium_condition</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_emp" href="#fermi_eos.compute_energy_density_emp">compute_energy_density_emp</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_from_u_emp" href="#fermi_eos.compute_energy_density_from_u_emp">compute_energy_density_from_u_emp</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_from_u_sky" href="#fermi_eos.compute_energy_density_from_u_sky">compute_energy_density_from_u_sky</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_from_x_gen" href="#fermi_eos.compute_energy_density_from_x_gen">compute_energy_density_from_x_gen</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_from_x_npe" href="#fermi_eos.compute_energy_density_from_x_npe">compute_energy_density_from_x_npe</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_gen" href="#fermi_eos.compute_energy_density_gen">compute_energy_density_gen</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_npe" href="#fermi_eos.compute_energy_density_npe">compute_energy_density_npe</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_pe" href="#fermi_eos.compute_energy_density_pe">compute_energy_density_pe</a></code></li>
+<li><code><a title="fermi_eos.compute_energy_density_sky" href="#fermi_eos.compute_energy_density_sky">compute_energy_density_sky</a></code></li>
+<li><code><a title="fermi_eos.compute_fermi_momentum_nonrel" href="#fermi_eos.compute_fermi_momentum_nonrel">compute_fermi_momentum_nonrel</a></code></li>
+<li><code><a title="fermi_eos.compute_k_n" href="#fermi_eos.compute_k_n">compute_k_n</a></code></li>
+<li><code><a title="fermi_eos.compute_k_p" href="#fermi_eos.compute_k_p">compute_k_p</a></code></li>
+<li><code><a title="fermi_eos.compute_number_density_emp" href="#fermi_eos.compute_number_density_emp">compute_number_density_emp</a></code></li>
+<li><code><a title="fermi_eos.compute_number_density_gen" href="#fermi_eos.compute_number_density_gen">compute_number_density_gen</a></code></li>
+<li><code><a title="fermi_eos.compute_number_density_nonrel" href="#fermi_eos.compute_number_density_nonrel">compute_number_density_nonrel</a></code></li>
+<li><code><a title="fermi_eos.compute_number_density_sky" href="#fermi_eos.compute_number_density_sky">compute_number_density_sky</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_from_u_emp" href="#fermi_eos.compute_pressure_from_u_emp">compute_pressure_from_u_emp</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_from_u_sky" href="#fermi_eos.compute_pressure_from_u_sky">compute_pressure_from_u_sky</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_from_x_npe" href="#fermi_eos.compute_pressure_from_x_npe">compute_pressure_from_x_npe</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_gen" href="#fermi_eos.compute_pressure_gen">compute_pressure_gen</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_npe" href="#fermi_eos.compute_pressure_npe">compute_pressure_npe</a></code></li>
+<li><code><a title="fermi_eos.compute_pressure_pe" href="#fermi_eos.compute_pressure_pe">compute_pressure_pe</a></code></li>
+<li><code><a title="fermi_eos.compute_u_emp" href="#fermi_eos.compute_u_emp">compute_u_emp</a></code></li>
+<li><code><a title="fermi_eos.compute_u_sky" href="#fermi_eos.compute_u_sky">compute_u_sky</a></code></li>
+<li><code><a title="fermi_eos.compute_x_gen" href="#fermi_eos.compute_x_gen">compute_x_gen</a></code></li>
+<li><code><a title="fermi_eos.equation_of_state_emp" href="#fermi_eos.equation_of_state_emp">equation_of_state_emp</a></code></li>
+<li><code><a title="fermi_eos.equation_of_state_gen" href="#fermi_eos.equation_of_state_gen">equation_of_state_gen</a></code></li>
+<li><code><a title="fermi_eos.equation_of_state_nonrel" href="#fermi_eos.equation_of_state_nonrel">equation_of_state_nonrel</a></code></li>
+<li><code><a title="fermi_eos.equation_of_state_npe" href="#fermi_eos.equation_of_state_npe">equation_of_state_npe</a></code></li>
+<li><code><a title="fermi_eos.equation_of_state_sky" href="#fermi_eos.equation_of_state_sky">equation_of_state_sky</a></code></li>
+<li><code><a title="fermi_eos.polytropic_equation_of_state" href="#fermi_eos.polytropic_equation_of_state">polytropic_equation_of_state</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.1</a>.</p>
+</footer>
+</body>
+</html>
