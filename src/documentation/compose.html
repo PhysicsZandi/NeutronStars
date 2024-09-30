@@ -33,6 +33,23 @@ hljs.highlightAll();
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
+<dt id="compose.all_I"><code class="name flex">
+<span>def <span class="ident">all_I</span></span>(<span>first_initial_pressure=33, last_initial_pressure=36, file_initial_letters='', folder_initial_letters='', add_low_density=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Compute and plot momenta of inertia versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>first_initial_pressure</code></strong> :&ensp;<code>float</code></dt>
+<dd>Exponent in base 10 of the first initial pressure to integrate. Default is 33.</dd>
+<dt><strong><code>last_initial_pressure</code></strong> :&ensp;<code>float</code></dt>
+<dd>Exponent in base 10 of the last initial pressure to integrate. Default is 36.</dd>
+<dt><strong><code>file_initial_letters</code></strong> :&ensp;<code>str</code></dt>
+<dd>Starting letters to filter files by name. Default is empty, meaning no filter.</dd>
+<dt><strong><code>folder_initial_letters</code></strong> :&ensp;<code>str</code></dt>
+<dd>Starting letters to filter folders by name. Default is empty, meaning no filter.</dd>
+</dl></div>
+</dd>
 <dt id="compose.all_MvsR"><code class="name flex">
 <span>def <span class="ident">all_MvsR</span></span>(<span>first_initial_pressure=33, last_initial_pressure=36, file_initial_letters='', folder_initial_letters='', add_low_density=False)</span>
 </code></dt>
@@ -56,8 +73,7 @@ hljs.highlightAll();
 <span>def <span class="ident">all_eos</span></span>(<span>file_initial_letters='', folder_initial_letters='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Plot the equation of state for different models based on the csv files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all
-models with color corresponding to the folder.</p>
+<div class="desc"><p>Plot the equation of state for different models based on the csv files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models with color corresponding to the folder.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>file_initial_letters</code></strong> :&ensp;<code>str</code></dt>
@@ -79,11 +95,11 @@ models with color corresponding to the folder.</p>
 <dd>Starting letters to filter folders by name. Default is empty, meaning no filter.</dd>
 </dl></div>
 </dd>
-<dt id="compose.all_z_and_I"><code class="name flex">
-<span>def <span class="ident">all_z_and_I</span></span>(<span>first_initial_pressure=33, last_initial_pressure=36, file_initial_letters='', folder_initial_letters='', add_low_density=False)</span>
+<dt id="compose.all_z"><code class="name flex">
+<span>def <span class="ident">all_z</span></span>(<span>first_initial_pressure=33, last_initial_pressure=36, file_initial_letters='', folder_initial_letters='', add_low_density=False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute and plot redshift and moment of inertia versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.</p>
+<div class="desc"><p>Compute and plot redshift versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>first_initial_pressure</code></strong> :&ensp;<code>float</code></dt>
@@ -156,23 +172,38 @@ models with color corresponding to the folder.</p>
 <dd>
 <div class="desc"><p>Computes the numerical derivative using a 5-point method.</p>
 <h2 id="parameters">Parameters</h2>
-<pre><code>range_x : NumPy array
-    The independent variable.
-range_y : NumPy array
-    The dependent variable.
-</code></pre>
+<dl>
+<dt><strong><code>range_x</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>The independent variable.</dd>
+<dt><strong><code>range_y</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>The dependent variable.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>NumPy array:</code></dt>
 <dd>A NumPy array containing the computed numerical derivatives.</dd>
 </dl></div>
 </dd>
+<dt id="compose.plot_folder"><code class="name flex">
+<span>def <span class="ident">plot_folder</span></span>(<span>folder_info, x_values, y_values)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plot two NumPy arrays for a given folder with color according to the belonging folder of data. The first time data from a folder is plotted, add a label and use a color from a dictionary, then subsequent calls for the same folder plot data without a label but use same color.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>folder_info</code></strong> :&ensp;<code>Dictionary</code></dt>
+<dd>Dictionary containing information if a folder label is already plotted with a Boolean variable.</dd>
+<dt><strong><code>x_values</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>NumPy array containing the values of the data points to be plotted on x-axis.</dd>
+<dt><strong><code>y_values</code></strong> :&ensp;<code>NumPy array</code></dt>
+<dd>NumPy array containing the values of the data points to be plotted on y-axis.</dd>
+</dl></div>
+</dd>
 <dt id="compose.search_file_path"><code class="name flex">
 <span>def <span class="ident">search_file_path</span></span>(<span>file_initial_letters='', folder_initial_letters='')</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Search for csv files in the "compose_eos" directory that match the given
-initial letters for both file names and folder names.</p>
+<div class="desc"><p>Search for csv files in the "compose_eos" directory that match the given initial letters for both file names and folder names.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>file_initial_letters</code></strong> :&ensp;<code>str</code></dt>
@@ -198,14 +229,16 @@ initial letters for both file names and folder names.</p>
 <ul id="index">
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
+<li><code><a title="compose.all_I" href="#compose.all_I">all_I</a></code></li>
 <li><code><a title="compose.all_MvsR" href="#compose.all_MvsR">all_MvsR</a></code></li>
 <li><code><a title="compose.all_eos" href="#compose.all_eos">all_eos</a></code></li>
 <li><code><a title="compose.all_v" href="#compose.all_v">all_v</a></code></li>
-<li><code><a title="compose.all_z_and_I" href="#compose.all_z_and_I">all_z_and_I</a></code></li>
+<li><code><a title="compose.all_z" href="#compose.all_z">all_z</a></code></li>
 <li><code><a title="compose.compute_moment_inertia" href="#compose.compute_moment_inertia">compute_moment_inertia</a></code></li>
 <li><code><a title="compose.compute_redshift" href="#compose.compute_redshift">compute_redshift</a></code></li>
 <li><code><a title="compose.compute_sound_speed" href="#compose.compute_sound_speed">compute_sound_speed</a></code></li>
 <li><code><a title="compose.numerical_derivative" href="#compose.numerical_derivative">numerical_derivative</a></code></li>
+<li><code><a title="compose.plot_folder" href="#compose.plot_folder">plot_folder</a></code></li>
 <li><code><a title="compose.search_file_path" href="#compose.search_file_path">search_file_path</a></code></li>
 </ul>
 </li>

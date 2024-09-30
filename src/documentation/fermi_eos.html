@@ -37,8 +37,7 @@ hljs.highlightAll();
 <span>def <span class="ident">beta_equilibrium_condition</span></span>(<span>k_p, k_n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Condition of beta equilibrium in order to compute k_p as a function of k_n.
-If it returns zero, then the Fermi momentum of the proton is the expected one, since it means that chemical potentials of neutrons, protons and electrons match the equilibrum condition for the (beta) weak interactions.</p>
+<div class="desc"><p>Condition of beta equilibrium in order to compute k_p as a function of k_n, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons. If it returns zero, then the Fermi momentum of the proton is the expected one, since it means that chemical potentials of neutrons, protons and electrons match the equilibrum condition for the (beta) weak interactions. Therefore, the k_p given in input is the desidered value of k_p.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_p</code></strong> :&ensp;<code>float</code></dt>
@@ -56,7 +55,7 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_emp</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from pressure.</p>
+<div class="desc"><p>Compute energy density from pressure, in the case of empirical interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -77,7 +76,7 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_from_u_emp</span></span>(<span>u)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from u = n / n_0.</p>
+<div class="desc"><p>Compute energy density from u = n / n_0, in the case of empirical interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
@@ -93,7 +92,7 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_from_u_sky</span></span>(<span>u)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from u = n / n_0.</p>
+<div class="desc"><p>Compute energy density from u = n / n_0, in the case of Skyrme Hatree-Fock interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
@@ -109,7 +108,7 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_from_x_gen</span></span>(<span>x)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from x = k / (m c).</p>
+<div class="desc"><p>Compute energy density from x = k / (m c), in the case of a generic case of degenerate ideal Fermi gas of neutrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
@@ -130,11 +129,11 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_from_x_npe</span></span>(<span>x, e_0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from x = k / (mc) and prefactor e_0.</p>
+<div class="desc"><p>Compute energy density from x = k / (m c) and prefactor e_0, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
-<dd>Dimensionless x.</dd>
+<dd>Dimensionless x = k / (m c).</dd>
 <dt><strong><code>e_0</code></strong> :&ensp;<code>float</code></dt>
 <dd>Prefactor in erg/cm^3.</dd>
 </dl>
@@ -148,7 +147,7 @@ If it returns zero, then the Fermi momentum of the proton is the expected one, s
 <span>def <span class="ident">compute_energy_density_gen</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from pressure.</p>
+<div class="desc"><p>Compute energy density from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons.</p>
 <p>Parameters:
 - p : float
 Pressure in dyne/cm^2.</p>
@@ -160,7 +159,7 @@ Energy density in erg/cm^3.</p></div>
 <span>def <span class="ident">compute_energy_density_npe</span></span>(<span>k_n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>In presence of protons, electrons and neutrons, compute energy density from Fermi momentum of neutrons.</p>
+<div class="desc"><p>In presence of protons, electrons and neutrons, compute energy density from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
@@ -180,7 +179,7 @@ Energy density in erg/cm^3.</p></div>
 <span>def <span class="ident">compute_energy_density_pe</span></span>(<span>k_p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>In presence of protons and electrons (no neutrons), compute energy density from Fermi momentum of protons.</p>
+<div class="desc"><p>In presence of protons and electrons (no neutrons), compute energy density from Fermi momentum of protons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
@@ -201,7 +200,7 @@ Energy density in erg/cm^3.</p></div>
 <span>def <span class="ident">compute_energy_density_sky</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from pressure.</p>
+<div class="desc"><p>Compute energy density from pressure, in the case of Skyrme Hatree-Fock interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -220,7 +219,7 @@ If energy density is negative.</p>
 <span>def <span class="ident">compute_fermi_momentum_nonrel</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute Fermi momentum from pressure in the non-relativistic limit.</p>
+<div class="desc"><p>Compute Fermi momentum from pressure in the case of a non-relativistic degenerate ideal Fermi gas of neutrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -236,11 +235,11 @@ If energy density is negative.</p>
 <span>def <span class="ident">compute_k_n</span></span>(<span>n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute Fermi momentum of neutrons from number density.</p>
+<div class="desc"><p>Compute Fermi momentum of neutrons from number density, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>n</code></strong> :&ensp;<code>float</code></dt>
-<dd>Number density in 1/cm^3</dd>
+<dd>Number density in cm^-3.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -252,7 +251,7 @@ If energy density is negative.</p>
 <span>def <span class="ident">compute_k_p</span></span>(<span>k_n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute k_p from k_n. he fsolve algorithm is used to find the right value of k_p that matches the beta equilibrium condition for chemical potential.</p>
+<div class="desc"><p>Compute Fermi momentum of protons from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons. The toms748 algorithm is used to find the right value of k_p that matches the beta equilibrium condition for chemical potential.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
@@ -273,7 +272,7 @@ If energy density is negative.</p>
 <span>def <span class="ident">compute_number_density_emp</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute number density from pressure.</p>
+<div class="desc"><p>Compute number density from pressure, in the case of empirical interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -287,14 +286,14 @@ If energy density is negative.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Number density in erg/cm^3.</dd>
+<dd>Number density in cm^-3.</dd>
 </dl></div>
 </dd>
 <dt id="fermi_eos.compute_number_density_gen"><code class="name flex">
 <span>def <span class="ident">compute_number_density_gen</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute number density from pressure.</p>
+<div class="desc"><p>Compute number density from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons.</p>
 <p>Parameters:
 - p : float
 Pressure in dyne/cm^2.</p>
@@ -306,7 +305,7 @@ Number density in erg/cm^3.</p></div>
 <span>def <span class="ident">compute_number_density_nonrel</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute number density from pressure in the non-relativistic limit.</p>
+<div class="desc"><p>Compute number density from pressure in the case of a non-relativistic degenerate ideal Fermi gas of neutrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -315,14 +314,14 @@ Number density in erg/cm^3.</p></div>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Number density in 1/cm^3.</dd>
+<dd>Number density in cm^-3.</dd>
 </dl></div>
 </dd>
 <dt id="fermi_eos.compute_number_density_sky"><code class="name flex">
 <span>def <span class="ident">compute_number_density_sky</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute number density from pressure.</p>
+<div class="desc"><p>Compute number density from pressure, in the case of Skyrme Hatree-Fock interactions.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -335,13 +334,13 @@ Number density in erg/cm^3.</p></div>
 </dl>
 <h2 id="returns">Returns:</h2>
 <p>float
-Energy density in erg/cm^3.</p></div>
+Number density in cm^-3.</p></div>
 </dd>
 <dt id="fermi_eos.compute_pressure_from_u_emp"><code class="name flex">
 <span>def <span class="ident">compute_pressure_from_u_emp</span></span>(<span>u, p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute calculated pressure minus expected pressure from the latter and u = n / n_0. If it returns zero, then the pressure is exactly the desidered one.</p>
+<div class="desc"><p>Compute calculated pressure minus expected pressure from the latter and u = n / n_0, in the case of empirical interactions. If it returns zero, then the pressure is exactly the desidered one. Therefore, the u given in input is the desidered value of u.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
@@ -359,8 +358,7 @@ Energy density in erg/cm^3.</p></div>
 <span>def <span class="ident">compute_pressure_from_u_sky</span></span>(<span>u, p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute calculated pressure minus expected pressure from expected pressure and u = n / n_0.
-If it returns zero, then the pressure is exactly the desidered one.</p>
+<div class="desc"><p>Compute calculated pressure minus expected pressure from expected pressure and u = n / n_0, in the case of Skyrme Hatree-Fock interactions. If it returns zero, then the pressure is exactly the desidered one. Therefore, the u given in input is the desidered value of u.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
@@ -378,11 +376,11 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_pressure_from_x_npe</span></span>(<span>x, e_0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute pressure from x = k / (mc) and prefactor e_0.</p>
+<div class="desc"><p>Compute pressure from x = k / (mc) and prefactor e_0, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
-<dd>Dimensionless x.</dd>
+<dd>Dimensionless x = k / (m c).</dd>
 <dt><strong><code>e_0</code></strong> :&ensp;<code>float</code></dt>
 <dd>Prefactor in erg/cm^3.</dd>
 </dl>
@@ -396,7 +394,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_pressure_gen</span></span>(<span>x, p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute calculated pressure minus expected pressure given the latter and x = k / (m c). If it returns zero, then the pressure is exactly the desidered one.</p>
+<div class="desc"><p>Compute calculated pressure minus expected pressure given the latter and x = k / (m c), in the case of a generic case of degenerate ideal Fermi gas of neutrons. If it returns zero, then the pressure is exactly the desidered one. Therefore, the x given in input is the desidered value of x.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>float</code></dt>
@@ -414,7 +412,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_pressure_npe</span></span>(<span>k_n)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>In presence of protons, electrons and neutrons, compute pressure from Fermi momentum of neutrons.</p>
+<div class="desc"><p>In presence of protons, electrons and neutrons, compute pressure from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_n</code></strong> :&ensp;<code>float</code></dt>
@@ -435,7 +433,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_pressure_pe</span></span>(<span>k_p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>In presence of protons and electrons (no neutrons), compute pressure from Fermi momentum of protons.</p>
+<div class="desc"><p>In presence of protons and electrons (no neutrons), compute pressure from Fermi momentum of protons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>k_p</code></strong> :&ensp;<code>float</code></dt>
@@ -456,7 +454,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_u_emp</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
+<div class="desc"><p>Compute u = n / n_0 from pressure, in the case of empirical interactions. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -477,7 +475,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_u_sky</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
+<div class="desc"><p>Compute u = n / n_0 from pressure, in the case of Skyrme Hatree-Fock interactions. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>u</code></strong> :&ensp;<code>float</code></dt>
@@ -498,7 +496,7 @@ If it returns zero, then the pressure is exactly the desidered one.</p>
 <span>def <span class="ident">compute_x_gen</span></span>(<span>p)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute x = k / (m c) from pressure. The toms748 algorithm is used to find the right value of x that matches the expected pressure with the calculated one.</p>
+<div class="desc"><p>Compute x = k / (m c) from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons. The toms748 algorithm is used to find the right value of x that matches the expected pressure with the calculated one.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -547,7 +545,7 @@ If pressure is negative.</p></div>
 <span>def <span class="ident">equation_of_state_nonrel</span></span>(<span>pressures)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute and save to file the equation of state for a non-relativistic degenerate ideal Fermi gas of neutrons. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.</p>
+<div class="desc"><p>Compute and save to file the equation of state for a non-relativistic degenerate ideal Fermi gas of neutrons. The equation of state is in the form of energy density as function of pressure. Also number densities are computed and saved to file.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>pressures</code></strong> :&ensp;<code>NumPy array</code></dt>
@@ -565,7 +563,7 @@ If pressure is negative.</p></div>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>number_densities</code></strong> :&ensp;<code>NumPy array</code></dt>
-<dd>Numpy array of number densities in 1/cm^3.</dd>
+<dd>Numpy array of number densities in cm^-3.</dd>
 </dl>
 <p>Raises:
 - ValueError
@@ -589,7 +587,7 @@ If pressure is negative.</p></div>
 <span>def <span class="ident">polytropic_equation_of_state</span></span>(<span>p, k, gamma)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Compute energy density from pressure using polytropic equation of state. K is the prefactor and gamma is the exponent of energy density.</p>
+<div class="desc"><p>Compute energy density from pressure using polytropic equation of state p(e) = k e^gamma or e(p) = (p / k)^(1 / gamma). k is the prefactor and gamma is the exponent of energy density.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>p</code></strong> :&ensp;<code>float</code></dt>
@@ -597,7 +595,7 @@ If pressure is negative.</p></div>
 <dt><strong><code>k</code></strong> :&ensp;<code>float</code></dt>
 <dd>K in (dyne/cm^2)^(1 - gamma).</dd>
 <dt><strong><code>gamma</code></strong> :&ensp;<code>float</code></dt>
-<dd>Dimensionless Gamma.</dd>
+<dd>Dimensionless gamma.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
