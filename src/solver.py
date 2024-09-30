@@ -464,7 +464,7 @@ class SolverTOVSinglePressure:
         axs[1].set_xlabel("Radius ($km$)")
         axs[1].set_ylabel("Mass ($M_{\\odot}$)")
         axs[1].grid(True)
-        axs[0].set_title("Mass vs radius")
+        axs[1].set_title("Mass vs radius")
         plt.show()
 
 
@@ -631,7 +631,7 @@ class SolverTOVRangePressure:
         axs[1].set_ylabel("Mass ($M_{\\odot}$)")
         axs[1].set_xscale("log")
         axs[1].grid(True)
-        axs[0].set_title("Mass vs pressure")
+        axs[1].set_title("Mass vs pressure")
         plt.show()
 
     def plot_MvsR(self):
