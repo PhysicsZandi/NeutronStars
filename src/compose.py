@@ -10,10 +10,10 @@ def numerical_derivative(range_x, range_y):
 
     Parameters
     ----------
-        range_x : NumPy array
-            The independent variable.
-        range_y : NumPy array
-            The dependent variable.
+    range_x : NumPy array
+        The independent variable.
+    range_y : NumPy array
+        The dependent variable.
 
     Returns
     --------
@@ -51,11 +51,7 @@ def compute_sound_speed(range_p, range_e):
     p_prime = numerical_derivative(range_e, range_p)
     sound_speeds = np.array([])
 
-    for p in p_prime:
-        if p >= 0:
-            sound_speeds = np.append(sound_speeds, p)
-        else:
-            sound_speeds = np.append(sound_speeds, 0)
+    sound_speeds = np.maximum(p_prime, 0)  # if p > 0 append p, otherwise append 0
 
     return sound_speeds
 
@@ -138,6 +134,32 @@ def search_file_path(file_initial_letters="", folder_initial_letters=""):
     return file_info
 
 
+def plot_folder(folder_info, x_values, y_values):
+    """
+    Plot two NumPy arrays for a given folder with color according to the belonging folder of data. The first time data from a folder is plotted, add a label and use a color from a dictionary, then subsequent calls for the same folder plot data without a label but use same color.
+
+    Parameters
+    ----------
+    folder_info : Dictionary
+        Dictionary containing information if a folder label is already plotted with a Boolean variable.
+
+    x_values : NumPy array
+        NumPy array containing the values of the data points to be plotted on x-axis.
+
+    y_values : NumPy array
+         NumPy array containing the values of the data points to be plotted on y-axis.
+    """
+
+    # Plot equation of state with color according to the folder
+    if not folder_info["plotted"]:
+        plt.plot(
+            x_values, y_values, label=folder_info["label"], color=folder_info["color"]
+        )
+        folder_info["plotted"] = True
+    else:
+        plt.plot(x_values, y_values, color=folder_info["color"])
+
+
 def all_eos(file_initial_letters="", folder_initial_letters=""):
     """
     Plot the equation of state for different models based on the csv files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models with color corresponding to the folder.
@@ -150,9 +172,8 @@ def all_eos(file_initial_letters="", folder_initial_letters=""):
         Starting letters to filter folders by name. Default is empty, meaning no filter.
 
     """
-
     # Dictionary to keep track of the folder features
-    folder_labels = {
+    folder_features = {
         "delta_models": {"label": "Delta", "color": "red", "plotted": False},
         "hybrid_models": {"label": "Hybrid", "color": "blue", "plotted": False},
         "hyperon_models": {"label": "Hyperon", "color": "green", "plotted": False},
@@ -166,21 +187,11 @@ def all_eos(file_initial_letters="", folder_initial_letters=""):
 
         EoS = EquationOfState()
         EoS.load_from_file(file_path)
-        pressures, energy_densities = EoS.get()
+        n, pressures, energy_densities = EoS.get()
 
         if file_initial_letters == "" and folder_initial_letters == "":
-            # Plot equation of state with color according to the folder
-            folder_info = folder_labels[folder_name]
-            if not folder_info["plotted"]:
-                plt.plot(
-                    pressures,
-                    energy_densities,
-                    label=folder_info["label"],
-                    color=folder_info["color"],
-                )
-                folder_info["plotted"] = True
-            else:
-                plt.plot(pressures, energy_densities, color=folder_info["color"])
+            folder_info = folder_features[folder_name]
+            plot_folder(folder_info, pressures, energy_densities)
         else:
             plt.plot(pressures, energy_densities, label=file_name)
 
@@ -191,6 +202,7 @@ def all_eos(file_initial_letters="", folder_initial_letters=""):
     plt.grid(True)
     plt.legend()
     plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
+    plt.title("Equation of state")
     plt.show()
 
 
@@ -244,17 +256,13 @@ def all_MvsR(
         EoS.load_from_file(file_path)
         eos = EoS.interpolate()
 
-        solver = SolverRangePressure(eos, relativity_corrections=True)
+        solver = SolverTOVRangePressure(eos, relativity_corrections=True)
         solver.solve(step_r, range_initial_pressures)
         r, m, p = solver.get()
+
         if file_initial_letters == "" and folder_initial_letters == "":
-            # Plot equation of state with color according to the folder
             folder_info = folder_features[folder_name]
-            if not folder_info["plotted"]:
-                plt.plot(r, m, label=folder_info["label"], color=folder_info["color"])
-                folder_info["plotted"] = True
-            else:
-                plt.plot(r, m, color=folder_info["color"])
+            plot_folder(folder_info, r, m)
         else:
             plt.plot(r, m, label=file_name)
 
@@ -263,6 +271,7 @@ def all_MvsR(
     plt.grid(True)
     plt.legend()
     plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
+    plt.title("Mass versus radius")
     plt.show()
 
 
@@ -277,7 +286,8 @@ def all_v(file_initial_letters="", folder_initial_letters=""):
     folder_initial_letters : str
         Starting letters to filter folders by name. Default is empty, meaning no filter.
     """
-    folder_labels = {
+    # Dictionary to keep track of the folder features
+    folder_features = {
         "delta_models": {"label": "Delta", "color": "red", "plotted": False},
         "hybrid_models": {"label": "Hybrid", "color": "blue", "plotted": False},
         "hyperon_models": {"label": "Hyperon", "color": "green", "plotted": False},
@@ -291,25 +301,15 @@ def all_v(file_initial_letters="", folder_initial_letters=""):
 
         EoS = EquationOfState()
         EoS.load_from_file(file_path)
-        pressures, energy_densities = EoS.get()
+        n, pressures, energy_densities = EoS.get()
 
         sound_speeds = compute_sound_speed(pressures, energy_densities)
         # Derivative is computed with 5th points method so we need to remove first 2 and last 2 pressures
         pressures = pressures[:-2]
         pressures = pressures[2:]
         if file_initial_letters == "" and folder_initial_letters == "":
-            # Plot equation of state with color according to the folder
-            folder_info = folder_labels[folder_name]
-            if not folder_info["plotted"]:
-                plt.plot(
-                    pressures,
-                    sound_speeds,
-                    label=folder_info["label"],
-                    color=folder_info["color"],
-                )
-                folder_info["plotted"] = True
-            else:
-                plt.plot(pressures, sound_speeds, color=folder_info["color"])
+            folder_info = folder_features[folder_name]
+            plot_folder(folder_info, pressures, sound_speeds)
         else:
             plt.plot(pressures, sound_speeds, label=file_name)
 
@@ -319,10 +319,11 @@ def all_v(file_initial_letters="", folder_initial_letters=""):
     plt.grid(True)
     plt.legend()
     plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
+    plt.title("Sound speed versus pressure")
     plt.show()
 
 
-def all_z_and_I(
+def all_z(
     first_initial_pressure=33,
     last_initial_pressure=36,
     file_initial_letters="",
@@ -330,7 +331,7 @@ def all_z_and_I(
     add_low_density=False,
 ):
     """
-    Compute and plot redshift and moment of inertia versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.
+    Compute and plot redshift versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.
 
     Parameters
     ----------
@@ -343,7 +344,8 @@ def all_z_and_I(
     folder_initial_letters : str
         Starting letters to filter folders by name. Default is empty, meaning no filter.
     """
-    folder_labels = {
+    # Dictionary to keep track of the folder features
+    folder_features = {
         "delta_models": {"label": "Delta", "color": "red", "plotted": False},
         "hybrid_models": {"label": "Hybrid", "color": "blue", "plotted": False},
         "hyperon_models": {"label": "Hyperon", "color": "green", "plotted": False},
@@ -358,7 +360,78 @@ def all_z_and_I(
 
     file_info = search_file_path(file_initial_letters, folder_initial_letters)
 
-    fig, axs = plt.subplots(1, 2, figsize=(11, 5))
+    for info in file_info:
+        file_path, folder_name, file_name = info
+
+        # Compute mass and radius of the object
+        EoS = EquationOfState()
+        if add_low_density:
+            EoS.load_from_file("data/low_density.csv")
+        EoS.load_from_file(file_path)
+        eos = EoS.interpolate()
+
+        solver = SolverTOVRangePressure(eos, relativity_corrections=True)
+        solver.solve(step_r, initial_pressures)
+        radii, masses, p = solver.get()
+
+        redshifts = np.array([])
+
+        for i in range(len(initial_pressures)):
+            z = compute_redshift(radii[i], masses[i])
+            redshifts = np.append(redshifts, z)
+
+        if file_initial_letters == "" and folder_initial_letters == "":
+            folder_info = folder_features[folder_name]
+            plot_folder(folder_info, initial_pressures, redshifts)
+        else:
+            plt.plot(initial_pressures, redshifts, label=file_name)
+
+    plt.xlabel("Pressure ($dyne / cm^2$)")
+    plt.xscale("log")
+    plt.ylabel("Redshift")
+    plt.grid(True)
+    plt.legend()
+    plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
+    plt.title("Redshift versus pressure")
+    plt.show()
+
+
+def all_I(
+    first_initial_pressure=33,
+    last_initial_pressure=36,
+    file_initial_letters="",
+    folder_initial_letters="",
+    add_low_density=False,
+):
+    """
+    Compute and plot momenta of inertia versus initial pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.
+
+    Parameters
+    ----------
+    first_initial_pressure : float
+        Exponent in base 10 of the first initial pressure to integrate. Default is 33.
+    last_initial_pressure : float
+        Exponent in base 10 of the last initial pressure to integrate. Default is 36.
+    file_initial_letters : str
+        Starting letters to filter files by name. Default is empty, meaning no filter.
+    folder_initial_letters : str
+        Starting letters to filter folders by name. Default is empty, meaning no filter.
+    """
+    # Dictionary to keep track of the folder features
+    folder_features = {
+        "delta_models": {"label": "Delta", "color": "red", "plotted": False},
+        "hybrid_models": {"label": "Hybrid", "color": "blue", "plotted": False},
+        "hyperon_models": {"label": "Hyperon", "color": "green", "plotted": False},
+        "nucleonic_models": {"label": "Nucleonic", "color": "grey", "plotted": False},
+    }
+
+    step_r = 1e3
+    n_points = 40
+    initial_pressures = np.logspace(
+        first_initial_pressure, last_initial_pressure, n_points
+    )
+
+    file_info = search_file_path(file_initial_letters, folder_initial_letters)
 
     for info in file_info:
         file_path, folder_name, file_name = info
@@ -370,55 +443,27 @@ def all_z_and_I(
         EoS.load_from_file(file_path)
         eos = EoS.interpolate()
 
-        solver = SolverRangePressure(eos, relativity_corrections=True)
+        solver = SolverTOVRangePressure(eos, relativity_corrections=True)
         solver.solve(step_r, initial_pressures)
         radii, masses, p = solver.get()
 
-        redshifts = np.array([])
         momenta_inertia = np.array([])
 
         for i in range(len(initial_pressures)):
-            z = compute_redshift(radii[i], masses[i])
-            redshifts = np.append(redshifts, z)
             I = compute_moment_inertia(radii[i], masses[i])
             momenta_inertia = np.append(momenta_inertia, I)
 
         if file_initial_letters == "" and folder_initial_letters == "":
-            # Plot equation of state with color according to the folder
-            folder_info = folder_labels[folder_name]
-            if not folder_info["plotted"]:
-                axs[0].plot(
-                    initial_pressures,
-                    redshifts,
-                    label=folder_info["label"],
-                    color=folder_info["color"],
-                )
-                axs[1].plot(
-                    initial_pressures,
-                    momenta_inertia,
-                    label=folder_info["label"],
-                    color=folder_info["color"],
-                )
-                folder_info["plotted"] = True
-            else:
-                axs[0].plot(initial_pressures, redshifts, color=folder_info["color"])
-                axs[1].plot(
-                    initial_pressures, momenta_inertia, color=folder_info["color"]
-                )
+            folder_info = folder_features[folder_name]
+            plot_folder(folder_info, initial_pressures, momenta_inertia)
         else:
-            axs[0].plot(initial_pressures, redshifts, label=file_name)
-            axs[1].plot(initial_pressures, momenta_inertia, label=file_name)
+            plt.plot(initial_pressures, momenta_inertia, label=file_name)
 
-    axs[0].set_xlabel("Pressure ($dyne / cm^2$)")
-    axs[0].set_xscale("log")
-    axs[0].set_ylabel("Redshift")
-    axs[0].grid(True)
-
-    axs[1].set_xlabel("Pressure ($dyne / cm^2$)")
-    axs[1].set_xscale("log")
-    axs[1].set_ylabel("Moment of inertia ($g cm^2$)")
-    axs[1].grid(True)
-
+    plt.xlabel("Pressure ($dyne / cm^2$)")
+    plt.xscale("log")
+    plt.ylabel("Moment of inertia ($g cm^2$)")
+    plt.grid(True)
     plt.legend()
     plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
+    plt.title("Momentum of inertia versus pressure")
     plt.show()
