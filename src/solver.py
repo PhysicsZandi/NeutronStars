@@ -8,7 +8,7 @@ from physical_constants import *
 
 class EquationOfState:
     """
-    Class to represent an equation of state.
+    Class to represent an equation of state, i.e. energy density as function of pressure.
 
     Attributes
     ----------
@@ -22,18 +22,18 @@ class EquationOfState:
     Methods
     -------
     load_from_file(file_path)
-        Read data from a file and store number densities, pressures and energy densities in corresponding NumPy arrays.
+        Read data from csv file, given its path as parameter, and store respectively number densities, pressures and energy densities in corresponding NumPy arrays.
     plot()
-        Plot energy densities versus pressure.
+        Plot energy density versus pressure.
     interpolate()
-        Interpolate using cubic spline and return the equation of state in the form of energy density as a function of pressure.
+        Interpolate using cubic spline and return the equation of state in the form of CubicSpline representation in the form of energy density as function of pressure.
     get()
-        Return NumPy arrays containing pressure and energy density.
+        Return NumPy arrays containing number densities, pressures and energy densities.
     """
 
     def __init__(self):
         """
-        Initialise NumPy arrays to store number densities, pressures and energy densities.
+        Initialise empty NumPy arrays to store number densities, pressures and energy densities.
         """
         self.number_densities = np.array([])
         self.pressures = np.array([])
@@ -41,17 +41,17 @@ class EquationOfState:
 
     def load_from_file(self, file_path):
         """
-        Open file given its path, read data and store quantities in corresponding NumPy arrays. The first row is skipped because it is the header. The delimiter must be comma for csv files. In the first column there must be number densities in 1/cm^3, in the second column there must be pressures in dyne/cm^2, in the third column there must be energy densities in erg/cm^3.
+        Given its path as a paramater, open csv file, read data and store respectively number densities, pressures and energy densities in corresponding NumPy arrays. The first row is skipped because it is the header. The delimiter must be comma for csv files. In the first column there must be number densities in cm^-3, in the second column there must be pressures in dyne/cm^2, in the third column there must be energy densities in erg/cm^3.
 
         Parameters
         ----------
         file_path : str
-            Path of the file containing number densities, pressures and energy densities in respective columns.
+            Path of the csv file containing respectively number densities, pressures and energy densities in columns.
 
         Raises
         ------
-        InputError
-            The file cannot be opened.
+        IOError
+            The file is not loaded.
         ValueError
             The file is empty.
             Pressures are not strictly increasing.
@@ -62,7 +62,7 @@ class EquationOfState:
             self.pressures = np.append(self.pressures, data[:, 1])
             self.energy_densities = np.append(self.energy_densities, data[:, 2])
         except Exception as ex:
-            raise IOError(f"Failed to load file {file_path}: {ex}")
+            raise IOError(f"Failed to load file: {ex}")
 
         if self.pressures.size == 0 or self.energy_densities.size == 0:
             raise ValueError("File is empty.")
@@ -74,7 +74,7 @@ class EquationOfState:
 
     def plot(self):
         """
-        Plot energy density versus pressure using logarithmic scale for both x and y axis with a grid.
+        Plot energy density versus pressure, using logarithmic scale for both x and y axis with a grid.
 
         Raises
         ------
@@ -85,21 +85,24 @@ class EquationOfState:
             raise ValueError("No data loaded.")
 
         plt.plot(self.pressures, self.energy_densities)
-        plt.ylabel("Energy Density ($erg / cm^3$)")
+        plt.ylabel("Energy density ($erg / cm^3$)")
         plt.yscale("log")
         plt.xlabel("Pressure ($dyne / cm^2$)")
         plt.xscale("log")
         plt.grid(True)
+        plt.title("Equation of state")
         plt.show()
 
     def interpolate(self):
         """
         Interpolate pressures and energy densities into an equation of state using cubic spline (imported from SciPy).
+        Return the equation of state in the form of CubicSpline representation in the form of energy density as function of pressure.
+
 
         Returns
         -------
         CubicSpline
-            CubicSpline representation of the equation of state, which gives energy density as output once pressure is given as input.
+            CubicSpline representation of the equation of state in the form of energy density as function of pressure.
 
         Raises
         ------
@@ -114,55 +117,54 @@ class EquationOfState:
 
     def get(self):
         """
-        Return NumPy arrays containing pressures and energy densities.
+        Return NumPy arrays containing respectively number densities, pressures and energy densities.
 
         Returns
         -------
-        tuple
-            NumPy arrays of pressures and energy densities.
+        tuple : [NumPy array, NumPy array, NumPy array]
+            NumPy arrays of number densities in cm^-3, pressures in dyne/cm^2 and energy densities in erg/cm^3.
         """
-        return self.pressures, self.energy_densities
+        return self.number_densities, self.pressures, self.energy_densities
 
 
 class TOVSystem:
     """
-    Class to represent the system of ordinary differential equations for a spherically symmetric physical object
-    which is in static gravitational equilibrium. The system is composed in 3 equations: the mass equation, the pressure equation
-    and the equation of state. The pressure equation can be either Newtonian or relativistic (the latter called properly TOV equation).
+    Class to represent the system of ordinary differential equations describing a spherically symmetric physical object which is in static gravitational equilibrium. The system is composed of 3 equations: the mass equation, the pressure equation and the equation of state. The pressure equation can be either Newtonian or relativistic (the latter is called properly TOV equation). The equation of state is not general, because it depends on the matter content of the object, and so it must be given as input.
 
     Attributes
     ----------
     eos : CubicSpline
-        A CubicSpline representation of the equation of state.
+        A CubicSpline representation of the equation of state in the form of energy density as function of pressure.
     relativity_corrections : bool
-        A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian equation is used.
+        A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian pressure equation is used.
 
     Methods
     -------
     check_physical_constraints(r, p, m)
-        Control if physical quantities, like mass, pressure and radius, are positive.
+        Control values of mass, pressure and radius, since for physical reasons they must all be positive.
     dmdr(r, p, m)
-        Compute and return the mass equation accordingly to current radius, pressure and mass.
+        Compute and return the mass equation according to current radius, pressure and mass.
     dpdr(r, p, m)
-        Compute and return the pressure equation accordingly to current radius, pressure, mass. It can consider relativity corrections if attribute relativity_corrections is True.
+        Compute and return the pressure equation according to current radius, pressure, mass. It can consider relativity corrections if attribute relativity_corrections is True.
     """
 
     def __init__(self, eos, relativity_corrections=True):
         """
-        Take an equation of state and an option for relativity corrections and copy them as attributes of the class.
+        Take an equation of state and an option for relativity corrections and store them as attributes of the class.
 
-        Parameters:
-        eos : EquationOfState
-            A CubicSpline representation of the equation of state.
+        Parameters
+        ----------
+        eos : CubicSpline
+            A CubicSpline representation of the equation of state in the form of energy density as function of pressure.
         relativity_corrections : bool
-            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Netwonian equation is used.
+            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian pressure equation is used.
         """
         self.eos = eos
         self.relativity_corrections = relativity_corrections
 
     def check_physical_constraints(self, r, p, m):
         """
-        Check the physical constraints for radius, pressure and mass, which must be all positive. When pressure is negative, return False to signal that the surface of the object is reached and integration has to stop.
+        Check the values of radius, pressure and mass, which must be all positive. Mass and radius are positive by definition. Pressure can be at most zero at the surface, so that when pressure is negative or zero, return False to signal that the surface of the object is reached and integration has to stop.
 
         Parameters
         ----------
@@ -176,8 +178,8 @@ class TOVSystem:
         Raises
         ------
         ValueError
-            If radius is negative.
-            If mass is negative.
+            If radius is negative or zero.
+            If mass is negative or zero.
 
         Returns
         -------
@@ -185,20 +187,20 @@ class TOVSystem:
             True if all physical constraints are satisfied, False if pressure is negative.
         """
         # Stop if pressure is negative (indicating that we are at the surface)
-        if p < 0:
+        if p <= 0:
             return False
 
-        if r < 0:
-            raise ValueError("Radius cannot be negative.")
+        if r <= 0:
+            raise ValueError("Radius cannot be negative or zero.")
 
-        if m < 0:
-            raise ValueError("Mass cannot be negative.")
+        if m <= 0:
+            raise ValueError("Mass cannot be negative or zero.")
 
         return True
 
     def dmdr(self, r, p, m):
         """
-        Compute the mass equation (dm/dr) based on the current radius, pressure and mass.
+        Compute and return the mass equation (dm/dr) based on the current radius, pressure and mass.
 
         Parameters
         ---------
@@ -212,8 +214,9 @@ class TOVSystem:
         Returns
         -------
         float
-            Mass equation of the system (dm/dr).
+            Value of the mass equation of the system (dm/dr).
         """
+        # If pressure is negative, we are at the surface and return 0
         if not self.check_physical_constraints(r, p, m):
             return 0
 
@@ -223,7 +226,7 @@ class TOVSystem:
 
     def dpdr(self, r, p, m):
         """
-        Compute the pressure equation (dp/dr) based on the current radius, pressure and mass.
+        Compute and return the pressure equation (dp/dr) based on the current radius, pressure and mass.
         If relativity corrections are included, return the TOV equation, otherwise return the Newtonian pressure equation.
 
         Parameters
@@ -238,7 +241,7 @@ class TOVSystem:
         Returns
         -------
         float
-            Pressure equation of the system (dp/dr).
+            Value of the pressure equation of the system (dp/dr).
         """
         # If pressure is negative, we are at the surface and return 0
         if not self.check_physical_constraints(r, p, m):
@@ -258,10 +261,9 @@ class TOVSystem:
         return dpdr
 
 
-class SolverSinglePressure:
+class SolverTOVSinglePressure:
     """
-    Class to solve numerically the system of ordinary differential equations given a single initial pressure.
-    Implement the 4th-order Runge-Kutta with a breaking condition when the pressure becomes zero or negative, because it means that the surface of the object is reached.
+    Class to integrate numerically the system of 2 ordinary differential equations (mass and pressure equations) given a single initial central pressure. The third equation of the TOV system (equation of state) is given as parameter. Implement the 4th-order Runge-Kutta algorithm with a breaking condition when the pressure becomes zero or negative, because it means that the surface of the object is reached. Store integrated masses and pressures in corresponding NumPy arrays.
 
     Attributes
     ----------
@@ -275,40 +277,40 @@ class SolverSinglePressure:
     Methods
     -------
     runge_kutta_4th_step(r, dr, p, m)
-        Implement the Runge-Kutta 4th order algorithm for a single step to solve numerically a system of two differential equations, according to current pressure, mass, radius and radius step.
+        Implement a single step of the Runge-Kutta 4th order algorithm to integrate numerically pressure and mass equations, according to current pressure, mass, radius and radius step of integration.
     solve(step_r, p0)
-        Solve the system until pressure drops to zero given the initial pressure and radius step. Store radii, masses and pressures in corresponding NumPy arrays.
+        Integrate the system until pressure drops to zero given the initial pressure and radius step of integration. Store radii, masses and pressures in corresponding NumPy arrays.
     print_mass_radius()
         Print the mass and the radius of the object.
     get()
-        Return radius, mass and pressure NumPy arrays.
+        Return NumPy arrays containing radii, masses and pressures.
     plot()
         Plot mass and radius versus pressure.
     """
 
     def __init__(self, eos, relativity_corrections=True):
         """
-        Initialize the class TOVSystem with an equation of state and an option for relativity corrections.
+        Take an equation of state and an option for relativity corrections and use them as parameters to create an instace of the class TOVSystem.
 
         Parameters
         ----------
         eos : CubicSpline
-            A CubicSpline representation of the equation of state.
+            A CubicSpline representation of the equation of state in the form of energy density as function of pressure.
         relativity_corrections : bool
-            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is considered, if False the Netwonian equation is considered.
+            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian pressure equation is used.
         """
         self.system = TOVSystem(eos, relativity_corrections)
 
     def runge_kutta_4th_step(self, r, dr, p, m):
         """
-        Perform a single step of the 4th-order Runge-Kutta algorithm. Given the current radius, pressure, mass and radius step, compute the 4 coefficients of the algorithm, using the equations in the methods of TOVSystem, and then compute and return the new calculated value of pressure and mass.
+        Perform a single step of the 4th-order Runge-Kutta algorithm. Given the current radius, pressure, mass and radius step of integration, compute the 4 increment coefficients of the 4th-order Runge-Kutta step, using the mass and pressure equations, and then compute and return the new calculated values of pressure and mass.
 
         Parameters
         ----------
         r : float
             Current radius in cm.
         dr : float
-            Radius step in cm.
+            Radius step of integration in cm.
         p : float
             Current pressure in dyne/cm^2.
         m : float
@@ -316,8 +318,8 @@ class SolverSinglePressure:
 
         Returns
         -------
-        tuple
-            NumPy arrays of pressures and masses.
+        tuple : [float, float]
+            New calculated values of pressure and mass.
         """
         kp_1 = self.system.dpdr(r, p, m) * dr
         km_1 = self.system.dmdr(r, p, m) * dr
@@ -338,12 +340,12 @@ class SolverSinglePressure:
 
     def solve(self, step_r, p0):
         """
-        Apply the 4th-order Runge-Kutta step using a while loop for the given initial pressure until pressure drops to zero. For every iteration, update the radius, pressure and mass values in the corresponding NumPy arrays. Change unit of measure of mass from g to solar masses and radius from cm to km.
+        Perform a while loop until pressure drops to zero, which means the integration has to stop because the surface is reached. For each iteration, compute the new calculated values of radius, pressure and mass using the 4th-order Runge-Kutta step and store them in corresponding NumPy arrays. Change unit of measure of mass from g to solar masses and radius from cm to km.
 
         Parameters
         ----------
         step_r : float
-            Radius step in cm.
+            Radius step of integration in cm.
         p0 : float
             Initial central pressure in dyne/cm^2.
 
@@ -362,7 +364,7 @@ class SolverSinglePressure:
         # Initial conditions for the Cauchy problem
         p0 = p0
         m0 = 1e-6  # Small initial mass to prevent division by zero
-        r0 = 1e-6  # Small initial radius to avoid division by zero
+        r0 = 1e-6  # Small initial radius to prevent division by zero
 
         # Initialize NumPy arrays with the initial conditions
         self.r_values = np.array([r0])
@@ -415,12 +417,12 @@ class SolverSinglePressure:
 
     def get(self):
         """
-        Return radius, mass and pressure NumPy arrays.
+        Return NumPy arrays containing respectively radii, masses and pressures.
 
         Returns
         --------
-        tuple
-            NumPy array of radius in km, mass in solar masses and pressures in dyne/cm^2.
+        tuple : [NumPy array, NumPy array, NumPy array]
+            NumPy arrays of radii in km, masses in solar masses and pressures in dyne/cm^2.
 
         Raises
         ------
@@ -438,8 +440,7 @@ class SolverSinglePressure:
 
     def plot(self):
         """
-        Plot mass and radius versus pressure.
-        Show two subplots: radius versus pressure and mass versus pressure with a grid.
+        Plot two subplots: pressure versus radius and mass versus radius with a grid.
 
         Raises
         -------
@@ -458,24 +459,25 @@ class SolverSinglePressure:
         axs[0].set_xlabel("Radius ($km$)")
         axs[0].set_ylabel("Pressure ($dyne / cm^2$)")
         axs[0].grid(True)
+        axs[0].set_title("Pressure vs radius")
         axs[1].plot(self.r_values, self.m_values)
         axs[1].set_xlabel("Radius ($km$)")
         axs[1].set_ylabel("Mass ($M_{\\odot}$)")
         axs[1].grid(True)
+        axs[0].set_title("Mass vs radius")
         plt.show()
 
 
-class SolverRangePressure:
+class SolverTOVRangePressure:
     """
-    Class to solve numerically the system of ordinary differential equations given a range of initial pressures.
-    It uses the class SolverSinglePressure for each initial pressure.
+    Class to integrate numerically the system of 2 ordinary differential equations (mass and pressure equations) given a range of initial central pressures. The third equation of the TOV system (equation of state) is given as parameter. It uses the class SolverTOVSinglePressure for each initial central pressure.
 
     Attributes
     ----------
     eos : CubicSpline
-        A CubicSpline representation of the equation of state.
+        A CubicSpline representation of the equation of state in the form of energy density as function of pressure.
     relativity_corrections : bool
-        A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is considered, if False the Netwonian equation is considered.
+        A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian pressure equation is used.
     radii : NumPy array
         NumPy array that stores radii in km.
     masses : NumPy array
@@ -486,28 +488,28 @@ class SolverRangePressure:
     Methods
     -------
     solve(step_r, initial_pressures)
-        Integrate the system until pressure drops to zero given the initial pressure and radius step. Store radii, masses and pressures in corresponding NumPy arrays.
+        Integrate the system for each pressure in the range of initial central pressure using the class SolverTOVSinglePressure. Store integrated radii and masses in corresponding NumPy arrays.
     print_max_mass()
         Print the maximum mass, its radius and central pressure.
     get()
-        Return NumPy arrays containing radius, mass and initial pressure.
+        Return NumPy arrays containing radii, masses and initial pressure.s
     plot_MRvsP()
         Plot mass and radius versus initial pressure.
-    plot_RvsM()
-        Plot radius versus mass.
+    plot_MvsR()
+        Plot mass versus radius.
     """
 
     def __init__(self, eos, relativity_corrections=True):
         """
-        Take an equation of state and an option for relativity corrections and copy them to attributes of the class.
+        Take an equation of state and an option for relativity corrections and store them as attributes of the class.
         Initialise NumPy arrays to store radii in km, pressures in dyne/cm^2 and masses in solar masses.
 
         Parameters
         ----------
         eos : CubicSpline
-            A CubicSpline representation of the equation of state.
+            A CubicSpline representation of the equation of state in the form of energy density as function of pressure.
         relativity_corrections : bool
-            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is considered, if False the Netwonian equation is considered.
+            A Boolean variable to determined whether to include general relativity corrections. If True the TOV equation is used, if False the Newtonian pressure equation is used.
         """
         self.eos = eos
         self.relativity_corrections = relativity_corrections
@@ -518,14 +520,14 @@ class SolverRangePressure:
 
     def solve(self, step_r, initial_pressures):
         """
-        Solve the system for a range of initial pressures. Using the class SolverSinglePressure, compute the mass and the radius and store them for each initial pressure.
+        Integrate the system for each pressure in the range of initial central pressure using the class SolverTOVSinglePressure (based on a 4th-order Runge-Kutta algorithm with a breaking condition when the pressure becomes zero or negative, because it means that the surface of the object is reached). Store integrated radii and masses in corresponding NumPy arrays.
 
         Parameters
         ----------
         step_r : float
             Radius step in cm.
         initial_pressures : NumPy array
-            NumPy array of initial pressures in dyne/cm^2.
+            NumPy array of initial central pressures in dyne/cm^2.
 
         Raises
         -------
@@ -543,7 +545,7 @@ class SolverRangePressure:
 
         for p0 in initial_pressures:
             # Solve for a single pressure p0
-            self.solver_single_p = SolverSinglePressure(
+            self.solver_single_p = SolverTOVSinglePressure(
                 self.eos, self.relativity_corrections
             )
             self.solver_single_p.solve(step_r, p0)
@@ -580,17 +582,17 @@ class SolverRangePressure:
 
     def get(self):
         """
-        Return the NumPy arrays of radius, mass and initial pressure.
+        Return NumPy arrays containing respectively radii, masses and initial central pressures.
 
         Returns
         --------
-        tuple
-            NumPy array of radius in km, mass in solar masses and initial pressure in dyne/cm^2.
+        tuple : [NumPy array, NumPy array, NumPy array]
+            NumPy arrays of radii in km, masses in solar masses and initial central pressures in dyne/cm^2.
 
         Raises
         ------
         ValueError
-            No data is computed to get
+            No data is computed to get.
         """
         if (
             self.radii.size == 0
@@ -603,13 +605,12 @@ class SolverRangePressure:
 
     def plot_MRvsP(self):
         """
-        Plot mass and radius versus initial pressure.
-        Show two subplots: radius versus initial pressure and mass versus initial pressure in logarithmic scal for the x axis with a grid.
+        Plot two subplots: radius versus initial central pressure and mass versus initial central pressure, using logarithmic scale for x with a grid.
 
         Raises
         -------
         ValueError
-            No data is computed to plot
+            No data is computed to plot.
         """
         if (
             self.radii.size == 0
@@ -624,21 +625,23 @@ class SolverRangePressure:
         axs[0].set_ylabel("Radius ($km$)")
         axs[0].set_xscale("log")
         axs[0].grid(True)
+        axs[0].set_title("Radius vs pressure")
         axs[1].plot(self.initial_pressures, self.masses)
         axs[1].set_xlabel("Pressure ($dyne / cm^2$)")
         axs[1].set_ylabel("Mass ($M_{\\odot}$)")
         axs[1].set_xscale("log")
         axs[1].grid(True)
+        axs[0].set_title("Mass vs pressure")
         plt.show()
 
-    def plot_RvsM(self):
+    def plot_MvsR(self):
         """
-        Plot radius versus mass with a grid.
+        Show plot of mass versus radius with a grid.
 
         Raises
         ------
         ValueError
-            No data is computed to plot
+            No data is computed to plot.
         """
         if (
             self.radii.size == 0
@@ -651,4 +654,5 @@ class SolverRangePressure:
         plt.xlabel("Radius ($km$)")
         plt.ylabel("Mass ($M_{\\odot}$)")
         plt.grid(True)
+        plt.title("Mass vs radius")
         plt.show()
