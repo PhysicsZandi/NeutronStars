@@ -1,13 +1,14 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import scipy.optimize as opt
 
-# Import physical constants
+# Import physical constants for computations
 from physical_constants import *
 
-# Fermi gas constants
+# Non-relativistic polytropic Fermi gas constants
 k_nonrel = hbar**2 / 15 / np.pi**2 / m_n * (3 * np.pi**2 / m_n / c**2) ** (5 / 3)
 gamma_nonrel = 5 / 3
+
+# Generic Fermi gas constants
 e_0_e = m_e**4 * c**5 / np.pi**2 / hbar**3
 e_0_n = m_n**4 * c**5 / np.pi**2 / hbar**3
 e_0_p = m_p**4 * c**5 / np.pi**2 / hbar**3
@@ -24,7 +25,6 @@ S_0 = 30 * MeV
 t_0 = 1024.1 * MeV * fm**3
 t_3 = 14600.8 * MeV * fm**6
 
-
 ###########################################################
 # Non-relativistic degenerate ideal Fermi gas of neutrons #
 ###########################################################
@@ -32,7 +32,7 @@ t_3 = 14600.8 * MeV * fm**6
 
 def polytropic_equation_of_state(p, k, gamma):
     """
-    Compute energy density from pressure using polytropic equation of state. K is the prefactor and gamma is the exponent of energy density.
+    Compute energy density from pressure using polytropic equation of state p(e) = k e^gamma or e(p) = (p / k)^(1 / gamma). k is the prefactor and gamma is the exponent of energy density.
 
     Parameters
     -----------
@@ -41,7 +41,7 @@ def polytropic_equation_of_state(p, k, gamma):
     k : float
         K in (dyne/cm^2)^(1 - gamma).
     gamma : float
-        Dimensionless Gamma.
+        Dimensionless gamma.
 
     Returns
     -------
@@ -55,7 +55,7 @@ def polytropic_equation_of_state(p, k, gamma):
 
 def compute_fermi_momentum_nonrel(p):
     """
-    Compute Fermi momentum from pressure in the non-relativistic limit.
+    Compute Fermi momentum from pressure in the case of a non-relativistic degenerate ideal Fermi gas of neutrons.
 
     Parameters
     ----------
@@ -74,7 +74,7 @@ def compute_fermi_momentum_nonrel(p):
 
 def compute_number_density_nonrel(p):
     """
-    Compute number density from pressure in the non-relativistic limit.
+    Compute number density from pressure in the case of a non-relativistic degenerate ideal Fermi gas of neutrons.
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def compute_number_density_nonrel(p):
     Returns
     --------
     float
-        Number density in 1/cm^3.
+        Number density in cm^-3.
     """
     k = compute_fermi_momentum_nonrel(p)
     n = k**3 / (3 * np.pi**2 * hbar**3)
@@ -93,7 +93,7 @@ def compute_number_density_nonrel(p):
 
 def equation_of_state_nonrel(pressures):
     """
-    Compute and save to file the equation of state for a non-relativistic degenerate ideal Fermi gas of neutrons. The equation of state is in the form energy density as function of pressure. Also number densities are computed and saved to file.
+    Compute and save to file the equation of state for a non-relativistic degenerate ideal Fermi gas of neutrons. The equation of state is in the form of energy density as function of pressure. Also number densities are computed and saved to file.
 
     Parameters
     ---------
@@ -135,7 +135,7 @@ def equation_of_state_nonrel(pressures):
 
 def compute_pressure_gen(x, p):
     """
-    Compute calculated pressure minus expected pressure given the latter and x = k / (m c). If it returns zero, then the pressure is exactly the desidered one.
+    Compute calculated pressure minus expected pressure given the latter and x = k / (m c), in the case of a generic case of degenerate ideal Fermi gas of neutrons. If it returns zero, then the pressure is exactly the desidered one. Therefore, the x given in input is the desidered value of x.
 
     Parameters
     ----------
@@ -158,7 +158,7 @@ def compute_pressure_gen(x, p):
 
 def compute_energy_density_from_x_gen(x):
     """
-    Compute energy density from x = k / (m c).
+    Compute energy density from x = k / (m c), in the case of a generic case of degenerate ideal Fermi gas of neutrons.
 
     Parameters
     -----------
@@ -191,7 +191,7 @@ def compute_energy_density_from_x_gen(x):
 
 def compute_x_gen(p):
     """
-    Compute x = k / (m c) from pressure. The toms748 algorithm is used to find the right value of x that matches the expected pressure with the calculated one.
+    Compute x = k / (m c) from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons. The toms748 algorithm is used to find the right value of x that matches the expected pressure with the calculated one.
 
     Parameters
     ---------
@@ -218,7 +218,7 @@ def compute_x_gen(p):
 
 def compute_energy_density_gen(p):
     """
-    Compute energy density from pressure.
+    Compute energy density from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons.
 
     Parameters:
     - p : float
@@ -235,7 +235,7 @@ def compute_energy_density_gen(p):
 
 def compute_number_density_gen(p):
     """
-    Compute number density from pressure.
+    Compute number density from pressure, in the case of a generic case of degenerate ideal Fermi gas of neutrons.
 
     Parameters:
     - p : float
@@ -295,12 +295,12 @@ def equation_of_state_gen(pressures):
 
 def compute_pressure_from_x_npe(x, e_0):
     """
-    Compute pressure from x = k / (mc) and prefactor e_0.
+    Compute pressure from x = k / (mc) and prefactor e_0, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
     x : float
-        Dimensionless x.
+        Dimensionless x = k / (m c).
     e_0 : float
         Prefactor in erg/cm^3.
 
@@ -316,12 +316,12 @@ def compute_pressure_from_x_npe(x, e_0):
 
 def compute_energy_density_from_x_npe(x, e_0):
     """
-    Compute energy density from x = k / (mc) and prefactor e_0.
+    Compute energy density from x = k / (m c) and prefactor e_0, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ---------
     x : float
-        Dimensionless x.
+        Dimensionless x = k / (m c).
     e_0 : float
         Prefactor in erg/cm^3.
 
@@ -340,8 +340,7 @@ def compute_energy_density_from_x_npe(x, e_0):
 
 def beta_equilibrium_condition(k_p, k_n):
     """
-    Condition of beta equilibrium in order to compute k_p as a function of k_n.
-    If it returns zero, then the Fermi momentum of the proton is the expected one, since it means that chemical potentials of neutrons, protons and electrons match the equilibrum condition for the (beta) weak interactions.
+    Condition of beta equilibrium in order to compute k_p as a function of k_n, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons. If it returns zero, then the Fermi momentum of the proton is the expected one, since it means that chemical potentials of neutrons, protons and electrons match the equilibrum condition for the (beta) weak interactions. Therefore, the k_p given in input is the desidered value of k_p.
 
     Parameters
     ----------
@@ -370,7 +369,7 @@ def beta_equilibrium_condition(k_p, k_n):
 
 def compute_k_p(k_n):
     """
-    Compute k_p from k_n. he fsolve algorithm is used to find the right value of k_p that matches the beta equilibrium condition for chemical potential.
+    Compute Fermi momentum of protons from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons. The toms748 algorithm is used to find the right value of k_p that matches the beta equilibrium condition for chemical potential.
 
     Parameters
     ----------
@@ -388,8 +387,8 @@ def compute_k_p(k_n):
         Fermi momentum of protons in g cm / s.
     """
     k_p = opt.toms748(
-        beta_equilibrium_condition, 1e-20, 1e20, args=(k_n,)
-    )  # Expected k_p to be at the same order of k_n
+        beta_equilibrium_condition, 1e-17, 1e2, args=(k_n,)
+    )  # Expected k_p in the (broad) interval [1e-17, 1e2]
     if k_p < 0:
         raise ValueError("Fermi momentum of protons cannot be negative.")
     return k_p
@@ -397,7 +396,7 @@ def compute_k_p(k_n):
 
 def compute_energy_density_npe(k_n):
     """
-    In presence of protons, electrons and neutrons, compute energy density from Fermi momentum of neutrons.
+    In presence of protons, electrons and neutrons, compute energy density from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
@@ -436,7 +435,7 @@ def compute_energy_density_npe(k_n):
 
 def compute_pressure_npe(k_n):
     """
-    In presence of protons, electrons and neutrons, compute pressure from Fermi momentum of neutrons.
+    In presence of protons, electrons and neutrons, compute pressure from Fermi momentum of neutrons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
@@ -470,7 +469,7 @@ def compute_pressure_npe(k_n):
 
 def compute_energy_density_pe(k_p):
     """
-    In presence of protons and electrons (no neutrons), compute energy density from Fermi momentum of protons.
+    In presence of protons and electrons (no neutrons), compute energy density from Fermi momentum of protons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
@@ -504,7 +503,7 @@ def compute_energy_density_pe(k_p):
 
 def compute_pressure_pe(k_p):
     """
-    In presence of protons and electrons (no neutrons), compute pressure from Fermi momentum of protons.
+    In presence of protons and electrons (no neutrons), compute pressure from Fermi momentum of protons, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
@@ -534,12 +533,12 @@ def compute_pressure_pe(k_p):
 
 def compute_k_n(n):
     """
-    Compute Fermi momentum of neutrons from number density.
+    Compute Fermi momentum of neutrons from number density, in the case of a generic case of degenerate ideal Fermi gas of neutrons, protons and electrons.
 
     Parameters
     ----------
     n : float
-        Number density in 1/cm^3
+        Number density in cm^-3.
 
     Returns
     -------
@@ -557,7 +556,7 @@ def equation_of_state_npe(number_densities):
     Parameters
     ---------
     number_densities : NumPy array
-        Numpy array of number densities in 1/cm^3.
+        Numpy array of number densities in cm^-3.
 
     Raises:
     - ValueError
@@ -607,7 +606,7 @@ def equation_of_state_npe(number_densities):
 
 def compute_pressure_from_u_emp(u, p):
     """
-    Compute calculated pressure minus expected pressure from the latter and u = n / n_0. If it returns zero, then the pressure is exactly the desidered one.
+    Compute calculated pressure minus expected pressure from the latter and u = n / n_0, in the case of empirical interactions. If it returns zero, then the pressure is exactly the desidered one. Therefore, the u given in input is the desidered value of u.
 
     Parameters
     ---------
@@ -634,7 +633,7 @@ def compute_pressure_from_u_emp(u, p):
 
 def compute_energy_density_from_u_emp(u):
     """
-    Compute energy density from u = n / n_0.
+    Compute energy density from u = n / n_0, in the case of empirical interactions.
 
     Parameters
     ---------
@@ -656,7 +655,7 @@ def compute_energy_density_from_u_emp(u):
 
 def compute_u_emp(p):
     """
-    Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.
+    Compute u = n / n_0 from pressure, in the case of empirical interactions. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.
 
     Parameters
     ----------
@@ -674,8 +673,8 @@ def compute_u_emp(p):
         Dimensionless u = n / n_0.
     """
     u = opt.toms748(
-        compute_pressure_from_u_emp, 1e-20, 1e20, args=(p,)
-    )  # Expected u to be of order 5
+        compute_pressure_from_u_emp, 1e-9, 1e3, args=(p,)
+    )  # Expected u in the (broad) interval [1e-9, 1e3]
     if u < 0:
         raise ValueError("u cannot be negative.")
     return u
@@ -683,7 +682,7 @@ def compute_u_emp(p):
 
 def compute_energy_density_emp(p):
     """
-    Compute energy density from pressure.
+    Compute energy density from pressure, in the case of empirical interactions.
 
     Parameters
     ----------
@@ -710,7 +709,7 @@ def compute_energy_density_emp(p):
 
 def compute_number_density_emp(p):
     """
-    Compute number density from pressure.
+    Compute number density from pressure, in the case of empirical interactions.
 
     Parameters
     ----------
@@ -725,7 +724,7 @@ def compute_number_density_emp(p):
     Returns
     -------
     float
-        Number density in erg/cm^3.
+        Number density in cm^-3.
     """
     u = compute_u_emp(p)  # Compute u
     n = u * n_0  # Compute number density
@@ -778,8 +777,7 @@ def equation_of_state_emp(pressures):
 
 def compute_pressure_from_u_sky(u, p):
     """
-    Compute calculated pressure minus expected pressure from expected pressure and u = n / n_0.
-    If it returns zero, then the pressure is exactly the desidered one.
+    Compute calculated pressure minus expected pressure from expected pressure and u = n / n_0, in the case of Skyrme Hatree-Fock interactions. If it returns zero, then the pressure is exactly the desidered one. Therefore, the u given in input is the desidered value of u.
 
     Parameters
     ---------
@@ -801,7 +799,7 @@ def compute_pressure_from_u_sky(u, p):
 
 def compute_energy_density_from_u_sky(u):
     """
-    Compute energy density from u = n / n_0.
+    Compute energy density from u = n / n_0, in the case of Skyrme Hatree-Fock interactions.
 
     Parameters
     ----------
@@ -823,7 +821,7 @@ def compute_energy_density_from_u_sky(u):
 
 def compute_u_sky(p):
     """
-    Compute u = n / n_0 from pressure. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.
+    Compute u = n / n_0 from pressure, in the case of Skyrme Hatree-Fock interactions. The toms748 algorithm is used to find the right value of u that matches the expected pressure with the calculated one.
 
     Parameters
     ----------
@@ -841,8 +839,8 @@ def compute_u_sky(p):
         Energy density in erg/cm^3.
     """
     u = opt.toms748(
-        compute_pressure_from_u_sky, 1e-21, 1e5, args=(p,)
-    )  # Expected u to be in the interval [1e-21, 1e5]
+        compute_pressure_from_u_sky, 1e-9, 1e3, args=(p,)
+    )  # Expected u in the (broad) interval [1e-9, 1e3]
     if u < 0:
         raise ValueError("u cannot be negative.")
     return u
@@ -850,7 +848,7 @@ def compute_u_sky(p):
 
 def compute_energy_density_sky(p):
     """
-    Compute energy density from pressure.
+    Compute energy density from pressure, in the case of Skyrme Hatree-Fock interactions.
 
     Parameters
     ----------
@@ -876,7 +874,7 @@ def compute_energy_density_sky(p):
 
 def compute_number_density_sky(p):
     """
-    Compute number density from pressure.
+    Compute number density from pressure, in the case of Skyrme Hatree-Fock interactions.
 
     Parameters
     ----------
@@ -891,7 +889,7 @@ def compute_number_density_sky(p):
     Returns:
     --------
     float
-        Energy density in erg/cm^3.
+        Number density in cm^-3.
     """
     u = compute_u_sky(p)  # Compute u
     n = u * n_0  # Compute number density
