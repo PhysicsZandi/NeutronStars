@@ -34,7 +34,7 @@ def numerical_derivative(range_x, range_y):
 
 def compute_sound_speed(range_p, range_e):
     """
-    Computes the speed of sound, i.e. the square root of the derivative of pressure with respect to energy density.
+    Computes the square of sound, i.e. the derivative of pressure with respect to energy density.
 
     Parameters
     -----------
@@ -46,7 +46,7 @@ def compute_sound_speed(range_p, range_e):
     Returns
     -------
     NumPy array:
-        A NumPy array containing the corresponding speeds of sound in units of c.
+        A NumPy array containing the corresponding square speeds of sound in units of c^2.
     """
     p_prime = numerical_derivative(range_e, range_p)
     sound_speeds = np.array([])
@@ -277,7 +277,7 @@ def all_MvsR(
 
 def all_v(file_initial_letters="", folder_initial_letters=""):
     """
-    Compute and plot sound speed versus pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.
+    Compute and plot square sound speed versus pressure for various models based on the equations of state files found in the "compose_eos" directory that match the given initial letters for both file names and folder names. If no filters are applied, it plots all models.
 
     Parameters
     ----------
@@ -313,13 +313,13 @@ def all_v(file_initial_letters="", folder_initial_letters=""):
         else:
             plt.plot(pressures, sound_speeds, label=file_name)
 
-    plt.ylabel("Sound speed ($c$)")
+    plt.ylabel("Square sound speed ($c^2$)")
     plt.xlabel("Pressure ($dyne / cm^2$)")
     plt.xscale("log")
     plt.grid(True)
     plt.legend()
     plt.legend(bbox_to_anchor=(1.1, 1), loc="upper left")
-    plt.title("Sound speed versus pressure")
+    plt.title("Square sound speed versus pressure")
     plt.show()
 
 
