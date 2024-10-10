@@ -30,4 +30,4 @@ For what concerns the equation of state, we have considered 2 kinds of equations
 ![alt text](src/compose_readme.png)
 
 
-The documentation of the project is in [documentation](https://github.com/PhysicsZandi/NeutronStars/tree/main/src/documentation).
+The documentation of the project, and the presentation as well, are in [documentation](https://github.com/PhysicsZandi/NeutronStars/tree/main/src/documentation).
